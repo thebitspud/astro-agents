@@ -19,7 +19,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "Astro Agent"
+        appName = "astro-agents"
         gdxVersion = '1.9.8'
         roboVMVersion = '2.3.3'
         box2DLightsVersion = '1.4'
@@ -55,8 +55,8 @@ project(":core") {
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
+        compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         
     }
 }

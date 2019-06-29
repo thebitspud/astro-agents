@@ -1,4 +1,4 @@
-package io.thebitspud.astroagent;
+package io.thebitspud.astroagents;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class AstroAgent extends ApplicationAdapter {
+public class AstroAgents extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private BitmapFont font;
