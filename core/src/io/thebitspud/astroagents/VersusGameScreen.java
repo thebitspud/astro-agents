@@ -85,15 +85,14 @@ public class VersusGameScreen implements Screen {
 		game.font.draw(game.batch, "Player 2 Health: " + p2Health + "%",
 				700, 550, 0, 1, false);
 
-		game.batch.end();
-
 		if(p1Health <= 0 || p2Health <= 0) {
-			game.setScreen(game.vsGameScreen);
-			dispose();
-
 			if(p1Health <= 0) game.vsOverScreen.gameOverText = "Player 2 Wins";
 			else game.vsOverScreen.gameOverText = "Player 1 Wins";
+
+			game.setScreen(game.vsOverScreen);
 		}
+
+		game.batch.end();
 	}
 
 	private void getInput(float delta) {

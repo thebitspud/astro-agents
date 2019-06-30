@@ -39,13 +39,13 @@ public class VersusOverScreen implements Screen {
 		game.font.draw(game.batch, "Both players: Hold start to play again",
 				400, 250,0, 1, false);
 
-		game.batch.end();
-
 		if (game.gamepads.get(0).getButton(9)
 				&& game.gamepads.get(1).getButton(9)) {
 			game.setScreen(game.vsGameScreen);
 			dispose();
 		}
+
+		game.batch.end();
 	}
 
 	@Override
