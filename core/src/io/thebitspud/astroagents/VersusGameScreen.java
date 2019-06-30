@@ -53,6 +53,9 @@ public class VersusGameScreen implements Screen {
 		player1.setPosition(20, 284);
 		player2.setPosition(749, 284);
 
+		p1Missiles.clear();
+		p2Missiles.clear();
+
 		p1Health = 100;
 		p2Health = 100;
 	}
@@ -83,6 +86,14 @@ public class VersusGameScreen implements Screen {
 				700, 550, 0, 1, false);
 
 		game.batch.end();
+
+		if(p1Health <= 0 || p2Health <= 0) {
+			game.setScreen(game.vsGameScreen);
+			dispose();
+
+			if(p1Health <= 0) game.vsOverScreen.gameOverText = "Player 2 Wins";
+			else game.vsOverScreen.gameOverText = "Player 1 Wins";
+		}
 	}
 
 	private void getInput(float delta) {

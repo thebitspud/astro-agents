@@ -9,8 +9,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 
 public class AstroAgents extends Game {
-	private MainMenuScreen menuScreen;
-	public VersusGameScreen vsScreen;
+	public MainMenuScreen menuScreen;
+	public VersusGameScreen vsGameScreen;
+	public VersusOverScreen vsOverScreen;
 
 	public SpriteBatch batch;
 	public BitmapFont font;
@@ -20,7 +21,8 @@ public class AstroAgents extends Game {
 	@Override
 	public void create() {
 		menuScreen = new MainMenuScreen(this);
-		vsScreen = new VersusGameScreen(this);
+		vsGameScreen = new VersusGameScreen(this);
+		vsOverScreen = new VersusOverScreen(this);
 
 		batch = new SpriteBatch();
 		font = new BitmapFont();

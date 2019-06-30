@@ -43,7 +43,7 @@ public class MainMenuScreen implements Screen {
 			game.font.draw(game.batch, "You must plug in 2 controllers to play",
 					400, 350, 0, 1, false);
 		} else {
-			game.font.draw(game.batch, "Player 1: press start to begin!",
+			game.font.draw(game.batch, "Both players: Hold start to begin",
 					400, 350, 0, 1, false);
 
 			game.font.draw(game.batch, "Press A to calibrate",
@@ -63,11 +63,12 @@ public class MainMenuScreen implements Screen {
 			if (TimeUtils.nanoTime() - lastControllerSwitch < 2000000000)
 				game.font.draw(game.batch, "Controllers successfully switched!",
 					400, 200, 0, 1, false);
-			else game.font.draw(game.batch, "Hold select to switch controllers",
+			else game.font.draw(game.batch, "Both players: Hold select to switch controllers",
 					400, 200, 0, 1, false);
 
-			if (game.gamepads.get(0).getButton(9)) {
-				game.setScreen(game.vsScreen);
+			if (game.gamepads.get(0).getButton(9)
+					&& game.gamepads.get(1).getButton(9)) {
+				game.setScreen(game.vsGameScreen);
 				dispose();
 			}
 		}
