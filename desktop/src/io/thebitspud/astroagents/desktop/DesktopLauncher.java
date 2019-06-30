@@ -12,7 +12,7 @@ public class DesktopLauncher {
 		config.forceExit = true;
 		config.width = 800;
 		config.height = 600;
-		config.title = "Astro Agents v0.2";
+		config.title = "Astro Agents v0.3";
 
 		new LwjglApplication(new AstroAgents(), config);
 	}
