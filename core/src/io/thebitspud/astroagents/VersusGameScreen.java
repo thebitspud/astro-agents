@@ -27,7 +27,7 @@ public class VersusGameScreen implements Screen {
 	private long p1LastShot, p2LastShot, p1LastSeeker, p2LastSeeker;
 	private int p1Health, p2Health;
 
-	public VersusGameScreen(final AstroAgents game) {
+	VersusGameScreen(final AstroAgents game) {
 		this.game = game;
 
 		camera = new OrthographicCamera();

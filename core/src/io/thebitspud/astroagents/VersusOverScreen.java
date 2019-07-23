@@ -9,9 +9,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 public class VersusOverScreen implements Screen {
 	private AstroAgents game;
 	private OrthographicCamera camera;
-	public String gameOverText;
+	String gameOverText;
 
-	public VersusOverScreen(final AstroAgents game) {
+	VersusOverScreen(final AstroAgents game) {
 		this.game = game;
 
 		camera = new OrthographicCamera();

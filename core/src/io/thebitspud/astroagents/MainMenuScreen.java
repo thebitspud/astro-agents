@@ -13,7 +13,7 @@ public class MainMenuScreen implements Screen {
 	private OrthographicCamera camera;
 	private long lastControllerSwitch;
 
-	public MainMenuScreen(final AstroAgents game) {
+	MainMenuScreen(final AstroAgents game) {
 		this.game = game;
 
 		camera = new OrthographicCamera();
