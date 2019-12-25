@@ -20,7 +20,7 @@ public class VersusGame {
 
 	private ArrayList<Rectangle> p1Missiles, p2Missiles, p1Seekers, p2Seekers, asteroids;
 	private long p1LastShot, p2LastShot, p1LastSeeker, p2LastSeeker;
-	private int p1Health, p2Health;
+	int p1Health, p2Health;
 
 	VersusGame(final AstroAgents app) {
 		this.app = app;
@@ -48,8 +48,8 @@ public class VersusGame {
 	}
 
 	void init() {
-		player1.setPosition(20, 284);
-		player2.setPosition(749, 284);
+		player1.setPosition(20, 269);
+		player2.setPosition(749, 269);
 
 		p1Missiles.clear();
 		p2Missiles.clear();
@@ -60,7 +60,7 @@ public class VersusGame {
 
 		for(int i = 0; i < 50; i++) {
 			int xPos = (AstroAgents.SCREEN_WIDTH / 2) + (int) (Math.random() * 100) - 38;
-			int yPos = (int) (Math.random() * 575);
+			int yPos = (int) (Math.random() * 525);
 			asteroids.add(new Rectangle(xPos, yPos, 25, 25));
 		}
 
@@ -69,6 +69,7 @@ public class VersusGame {
 	}
 
 	void tick(float delta) {
+		checkIfDead();
 		getInput(delta);
 		tickMissiles(delta);
 		tickSeekers(delta);
@@ -85,10 +86,9 @@ public class VersusGame {
 		app.font.setColor(Color.WHITE);
 		app.batch.draw(ship1, player1.x, player1.y);
 		app.batch.draw(ship2, player2.x, player2.y);
+	}
 
-		app.drawCenteredText("Player 1 Health: " + p1Health + "%", -300, 250);
-		app.drawCenteredText("Player 2 Health: " + p2Health + "%", 300, 250);
-
+	private void checkIfDead() {
 		if(p1Health <= 0 || p2Health <= 0) {
 			if(p1Health <= 0) app.vsOverScreen.gameOverText = "Player 2 Wins";
 			else app.vsOverScreen.gameOverText = "Player 1 Wins";
@@ -118,9 +118,9 @@ public class VersusGame {
 			else if (gamepad.getAxis(1) == 1) player1.x += 150 * delta;
 
 			if (player1.x < 0) player1.x = 0;
-			else if (player1.x > 768) player1.x = 768;
+			else if (player1.x > 769) player1.x = 769;
 			if (player1.y < 0) player1.y = 0;
-			else if (player1.y > 568) player1.y = 568;
+			else if (player1.y > 519) player1.y = 519;
 		}
 
 		if (app.gamepads.size() > 1) {
@@ -143,9 +143,9 @@ public class VersusGame {
 			else if (gamepad.getAxis(1) == 1) player2.x += 150 * delta;
 
 			if (player2.x < 0) player2.x = 0;
-			else if (player2.x > 768) player2.x = 768;
+			else if (player2.x > 769) player2.x = 769;
 			if (player2.y < 0) player2.y = 0;
-			else if (player2.y > 568) player2.y = 568;
+			else if (player2.y > 519) player2.y = 519;
 		}
 	}
 
