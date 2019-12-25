@@ -13,6 +13,7 @@ public class VersusGameScreen implements Screen {
 
 	private VersusGame game;
 	private TextureRegion grayBox;
+	final int hudHeight = 50;
 
 	VersusGameScreen(final AstroAgents app) {
 		this.app = app;
@@ -22,7 +23,6 @@ public class VersusGameScreen implements Screen {
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, AstroAgents.SCREEN_WIDTH, AstroAgents.SCREEN_HEIGHT);
-
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class VersusGameScreen implements Screen {
 
 		app.batch.begin();
 
-		app.batch.draw(grayBox,0,AstroAgents.SCREEN_HEIGHT - 50, AstroAgents.SCREEN_WIDTH,50);
+		app.batch.draw(grayBox, 0, AstroAgents.SCREEN_HEIGHT - 50, AstroAgents.SCREEN_WIDTH, hudHeight);
 
 		game.render();
 

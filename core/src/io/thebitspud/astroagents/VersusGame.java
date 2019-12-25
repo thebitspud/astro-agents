@@ -37,8 +37,9 @@ public class VersusGame {
 
 		smallAsteroid = new Texture("asteroid.png");
 
-		player1 = new Rectangle(20, 284, 31, 31);
-		player2 = new Rectangle(749, 284, 31, 31);
+		final int yPos = (AstroAgents.SCREEN_HEIGHT / 2) - 16;
+		player1 = new Rectangle(20, yPos, 31, 31);
+		player2 = new Rectangle(AstroAgents.SCREEN_WIDTH - 51, yPos, 31, 31);
 
 		p1Missiles = new ArrayList<Rectangle>();
 		p2Missiles = new ArrayList<Rectangle>();
@@ -48,8 +49,9 @@ public class VersusGame {
 	}
 
 	void init() {
-		player1.setPosition(20, 269);
-		player2.setPosition(749, 269);
+		final int yPos = (AstroAgents.SCREEN_HEIGHT / 2) - 16;
+		player1.setPosition(20, yPos);
+		player2.setPosition(AstroAgents.SCREEN_WIDTH - 51, yPos);
 
 		p1Missiles.clear();
 		p2Missiles.clear();
@@ -59,9 +61,9 @@ public class VersusGame {
 		asteroids.clear();
 
 		for(int i = 0; i < 50; i++) {
-			int xPos = (AstroAgents.SCREEN_WIDTH / 2) + (int) (Math.random() * 100) - 38;
-			int yPos = (int) (Math.random() * 525);
-			asteroids.add(new Rectangle(xPos, yPos, 25, 25));
+			final int xPos = (AstroAgents.SCREEN_WIDTH / 2) + (int) (Math.random() * 100) - 38;
+			final int yRange = AstroAgents.SCREEN_HEIGHT - 25 - app.vsGameScreen.hudHeight;
+			asteroids.add(new Rectangle(xPos, (int) (Math.random() * yRange), 25, 25));
 		}
 
 		p1Health = 100;
