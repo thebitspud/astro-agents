@@ -6,10 +6,12 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.awt.Toolkit;
 import java.util.ArrayList;
 
 public class AstroAgents extends Game {
-	public static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
+	public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width,
+			SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
 
 	VersusGameScreen vsGameScreen;
 	VersusOverScreen vsOverScreen;

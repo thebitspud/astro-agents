@@ -13,7 +13,9 @@ public class VersusGameScreen implements Screen {
 
 	private VersusGame game;
 	private TextureRegion grayBox;
-	final int hudHeight = 50;
+	final int hudHeight = 50,
+			textXOffset = AstroAgents.SCREEN_WIDTH / 2 - 100,
+			textYOffset = AstroAgents.SCREEN_HEIGHT / 2 - 20;
 
 	VersusGameScreen(final AstroAgents app) {
 		this.app = app;
@@ -46,8 +48,8 @@ public class VersusGameScreen implements Screen {
 
 		game.render();
 
-		app.drawCenteredText("Player 1 Health: " + game.p1Health + "%", -300, 280);
-		app.drawCenteredText("Player 2 Health: " + game.p2Health + "%", 300, 280);
+		app.drawCenteredText("Player 1 Health: " + game.p1Health + "%", -textXOffset, textYOffset);
+		app.drawCenteredText("Player 2 Health: " + game.p2Health + "%", textXOffset, textYOffset);
 
 		app.batch.end();
 	}

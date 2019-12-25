@@ -1,5 +1,7 @@
 package io.thebitspud.astroagents;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -100,6 +102,8 @@ public class VersusGame {
 	}
 
 	private void getInput(float delta) {
+		if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
+
 		if (app.gamepads.size() > 0) {
 			Controller gamepad = app.gamepads.get(0);
 
@@ -120,9 +124,10 @@ public class VersusGame {
 			else if (gamepad.getAxis(1) == 1) player1.x += 150 * delta;
 
 			if (player1.x < 0) player1.x = 0;
-			else if (player1.x > 769) player1.x = 769;
+			else if (player1.x > AstroAgents.SCREEN_WIDTH) player1.x = AstroAgents.SCREEN_WIDTH;
 			if (player1.y < 0) player1.y = 0;
-			else if (player1.y > 519) player1.y = 519;
+			else if (player1.y > AstroAgents.SCREEN_HEIGHT - 31 - app.vsGameScreen.hudHeight)
+				player1.y = AstroAgents.SCREEN_HEIGHT - 31 - app.vsGameScreen.hudHeight;
 		}
 
 		if (app.gamepads.size() > 1) {
@@ -145,9 +150,10 @@ public class VersusGame {
 			else if (gamepad.getAxis(1) == 1) player2.x += 150 * delta;
 
 			if (player2.x < 0) player2.x = 0;
-			else if (player2.x > 769) player2.x = 769;
+			else if (player2.x > AstroAgents.SCREEN_WIDTH - 31) player2.x = AstroAgents.SCREEN_WIDTH - 31;
 			if (player2.y < 0) player2.y = 0;
-			else if (player2.y > 519) player2.y = 519;
+			else if (player2.y > AstroAgents.SCREEN_HEIGHT - 31 - app.vsGameScreen.hudHeight)
+				player2.y = AstroAgents.SCREEN_HEIGHT - 31 - app.vsGameScreen.hudHeight;
 		}
 	}
 
@@ -155,7 +161,7 @@ public class VersusGame {
 		for (Iterator<Rectangle> iter = p1Missiles.iterator(); iter.hasNext(); ) {
 			Rectangle missile = iter.next();
 			missile.x += 500 * delta;
-			if (missile.x > 800) iter.remove();
+			if (missile.x > AstroAgents.SCREEN_WIDTH) iter.remove();
 			if (missile.overlaps(player2)) {
 				p2Health -= 5;
 				iter.remove();
@@ -180,7 +186,7 @@ public class VersusGame {
 		for (Iterator<Rectangle> iter = p1Seekers.iterator(); iter.hasNext(); ) {
 			Rectangle seeker = iter.next();
 			seeker.x += 400 * delta;
-			if (seeker.x > 800) iter.remove();
+			if (seeker.x > AstroAgents.SCREEN_WIDTH) iter.remove();
 
 			if (Math.abs(seeker.y - (player2.y + 15)) < seekerBonus) seeker.x += seekerBonus;
 			else if(seeker.y < (player2.y + 15)) seeker.y += seekerBonus;
@@ -207,8 +213,6 @@ public class VersusGame {
 			}
 		}
 	}
-
-	// Yes, I'm aware that this code is pure filth
 
 	private void tickAsteroids() {
 		for (Iterator<Rectangle> iter = asteroids.iterator(); iter.hasNext(); ) {
