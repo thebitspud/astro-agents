@@ -63,7 +63,7 @@ public class VersusGame {
 		asteroids.clear();
 
 		for(int i = 0; i < 50; i++) {
-			final int xPos = (AstroAgents.SCREEN_WIDTH / 2) + (int) (Math.random() * 100) - 38;
+			final int xPos = (AstroAgents.SCREEN_WIDTH / 2) + (int) (Math.random() * 100) - 62;
 			final int yRange = AstroAgents.SCREEN_HEIGHT - 25 - app.vsGameScreen.hudHeight;
 			asteroids.add(new Rectangle(xPos, (int) (Math.random() * yRange), 25, 25));
 		}
