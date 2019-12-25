@@ -10,9 +10,10 @@ public class DesktopLauncher {
 
 		config.allowSoftwareMode = true;
 		config.forceExit = true;
-		config.width = 800;
-		config.height = 600;
-		config.title = "Astro Agents v0.3";
+		config.resizable = false;
+		config.width = AstroAgents.SCREEN_WIDTH;
+		config.height = AstroAgents.SCREEN_HEIGHT;
+		config.title = "Astro Agents v0.4";
 
 		new LwjglApplication(new AstroAgents(), config);
 	}

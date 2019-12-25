@@ -11,13 +11,14 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class MainMenuScreen implements Screen {
 	private AstroAgents game;
 	private OrthographicCamera camera;
-	private long lastControllerSwitch;
+	private long lastControllerSwitch, lastGamepadCheck;
 
 	MainMenuScreen(final AstroAgents game) {
 		this.game = game;
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 600);
+		camera.setToOrtho(false, AstroAgents.SCREEN_WIDTH, AstroAgents.SCREEN_HEIGHT);
+		lastGamepadCheck = TimeUtils.nanoTime();
 	}
 
 	@Override
@@ -36,24 +37,23 @@ public class MainMenuScreen implements Screen {
 		game.batch.begin();
 
 		game.font.setColor(Color.WHITE);
-		game.font.draw(game.batch, "Astro Agents", 400, 400, 0, 1, false);
+		game.drawCenteredText("Astro Agents", 0, 0);
 
 		if (game.gamepads.size() < 2) {
-			game.font.setColor(Color.RED);
-			game.font.draw(game.batch, "You must plug in 2 controllers to play",
-					400, 350, 0, 1, false);
-		} else {
-			game.font.draw(game.batch, "Both players: Hold start to begin",
-					400, 350, 0, 1, false);
+			if(TimeUtils.nanoTime() - lastGamepadCheck > 500000000) {
+				game.checkForGamepads();
+			}
 
-			game.font.draw(game.batch, "Press A to calibrate",
-					400, 300, 0, 1, false);
+			game.font.setColor(Color.RED);
+			game.drawCenteredText("You must plug in 2 controllers to play", 0, -50);
+		} else {
+			game.drawCenteredText("Both players: Hold start to begin", 0, -50);
+
+			game.drawCenteredText("Press A to calibrate", 0, -100);
 			if (game.gamepads.get(0).getButton(1))
-				game.font.draw(game.batch, "Player 1: A",
-						325, 250, 0, 1, false);
+				game.drawCenteredText("Player 1: A", -75, -150);
 			if (game.gamepads.get(1).getButton(1))
-				game.font.draw(game.batch, "Player 2: A",
-						475, 250, 0, 1, false);
+				game.drawCenteredText("Player 1: A", 75, -150);
 
 			if (game.gamepads.get(0).getButton(8)
 					&& game.gamepads.get(1).getButton(8)
@@ -61,13 +61,10 @@ public class MainMenuScreen implements Screen {
 				switchControllers();
 
 			if (TimeUtils.nanoTime() - lastControllerSwitch < 2000000000)
-				game.font.draw(game.batch, "Controllers successfully switched!",
-					400, 200, 0, 1, false);
-			else game.font.draw(game.batch, "Both players: Hold select to switch controllers",
-					400, 200, 0, 1, false);
+				game.drawCenteredText("Controllers successfully switched!", 0, -200);
+			else game.drawCenteredText("Both players: Hold select to switch controllers", 0, -200);
 
-			if (game.gamepads.get(0).getButton(9)
-					&& game.gamepads.get(1).getButton(9)) {
+			if (game.gamepads.get(0).getButton(9) && game.gamepads.get(1).getButton(9)) {
 				game.setScreen(game.vsGameScreen);
 				dispose();
 			}

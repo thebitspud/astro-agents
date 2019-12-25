@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 
 public class AstroAgents extends Game {
+	public static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 600;
+
 	VersusGameScreen vsGameScreen;
 	VersusOverScreen vsOverScreen;
 
@@ -29,9 +31,18 @@ public class AstroAgents extends Game {
 
 		gamepads = new ArrayList<Controller>();
 
+		checkForGamepads();
+	}
+
+	void checkForGamepads() {
+		gamepads.clear();
 		for (Controller controller: Controllers.getControllers()) {
 			gamepads.add(controller);
 		}
+	}
+
+	void drawCenteredText(String text, int x, int y) {
+		font.draw(batch, text, SCREEN_WIDTH / 2 + x, SCREEN_HEIGHT / 2 + y, 0, 1, false);
 	}
 
 	@Override

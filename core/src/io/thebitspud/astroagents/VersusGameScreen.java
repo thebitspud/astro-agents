@@ -31,7 +31,7 @@ public class VersusGameScreen implements Screen {
 		this.game = game;
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 600);
+		camera.setToOrtho(false, AstroAgents.SCREEN_WIDTH, AstroAgents.SCREEN_HEIGHT);
 
 		ships = new Texture("player.png");
 		ship1 = new TextureRegion(ships, 0, 0, 31, 31);
@@ -88,10 +88,8 @@ public class VersusGameScreen implements Screen {
 		game.batch.draw(ship1, player1.x, player1.y);
 		game.batch.draw(ship2, player2.x, player2.y);
 
-		game.font.draw(game.batch, "Player 1 Health: " + p1Health + "%",
-				100, 550, 0, 1, false);
-		game.font.draw(game.batch, "Player 2 Health: " + p2Health + "%",
-				700, 550, 0, 1, false);
+		game.drawCenteredText("Player 1 Health: " + p1Health + "%", -300, 150);
+		game.drawCenteredText("Player 2 Health: " + p2Health + "%", 300, 150);
 
 		if(p1Health <= 0 || p2Health <= 0) {
 			if(p1Health <= 0) game.vsOverScreen.gameOverText = "Player 2 Wins";
@@ -107,21 +105,21 @@ public class VersusGameScreen implements Screen {
 		if (game.gamepads.size() > 0) {
 			Controller gamepad = game.gamepads.get(0);
 
-			if (gamepad.getButton(1) && (TimeUtils.nanoTime() - p1LastShot) / 100000000 > 5) {
+			if (gamepad.getButton(1) && (TimeUtils.nanoTime() - p1LastShot) / 100000000 > 4) {
 				p1Missiles.add(new Rectangle(player1.x + 9, player1.y  + 4, 13, 4));
 				p1Missiles.add(new Rectangle(player1.x + 9, player1.y  + 23, 13, 4));
 				p1LastShot = TimeUtils.nanoTime();
 			}
 
-			if (gamepad.getButton(0) && (TimeUtils.nanoTime() - p1LastSeeker) / 100000000 > 25) {
+			if (gamepad.getButton(0) && (TimeUtils.nanoTime() - p1LastSeeker) / 100000000 > 20) {
 				p1Seekers.add(new Rectangle(player1.x + 4, player1.y  + 13, 26, 5));
 				p1LastSeeker = TimeUtils.nanoTime();
 			}
 
-			if (gamepad.getAxis(0) == -1) player1.y += 100 * delta;
-			else if (gamepad.getAxis(0) == 1) player1.y -= 100 * delta;
-			if (gamepad.getAxis(1) == -1) player1.x -= 100 * delta;
-			else if (gamepad.getAxis(1) == 1) player1.x += 100 * delta;
+			if (gamepad.getAxis(0) == -1) player1.y += 150 * delta;
+			else if (gamepad.getAxis(0) == 1) player1.y -= 150 * delta;
+			if (gamepad.getAxis(1) == -1) player1.x -= 150 * delta;
+			else if (gamepad.getAxis(1) == 1) player1.x += 150 * delta;
 
 			if (player1.x < 0) player1.x = 0;
 			else if (player1.x > 768) player1.x = 768;
@@ -132,21 +130,21 @@ public class VersusGameScreen implements Screen {
 		if (game.gamepads.size() > 1) {
 			Controller gamepad = game.gamepads.get(1);
 
-			if (gamepad.getButton(1) && (TimeUtils.nanoTime() - p2LastShot) / 100000000 > 5) {
+			if (gamepad.getButton(1) && (TimeUtils.nanoTime() - p2LastShot) / 100000000 > 4) {
 				p2Missiles.add(new Rectangle(player2.x + 9, player2.y + 4, 13, 4));
 				p2Missiles.add(new Rectangle(player2.x + 9, player2.y + 23, 13, 4));
 				p2LastShot = TimeUtils.nanoTime();
 			}
 
-			if (gamepad.getButton(0) && (TimeUtils.nanoTime() - p2LastSeeker) / 100000000 > 25) {
+			if (gamepad.getButton(0) && (TimeUtils.nanoTime() - p2LastSeeker) / 100000000 > 20) {
 				p2Seekers.add(new Rectangle(player2.x + 4, player2.y  + 13, 26, 5));
 				p2LastSeeker = TimeUtils.nanoTime();
 			}
 
-			if (gamepad.getAxis(0) == -1) player2.y += 100 * delta;
-			else if (gamepad.getAxis(0) == 1) player2.y -= 100 * delta;
-			if (gamepad.getAxis(1) == -1) player2.x -= 100 * delta;
-			else if (gamepad.getAxis(1) == 1) player2.x += 100 * delta;
+			if (gamepad.getAxis(0) == -1) player2.y += 150 * delta;
+			else if (gamepad.getAxis(0) == 1) player2.y -= 150 * delta;
+			if (gamepad.getAxis(1) == -1) player2.x -= 150 * delta;
+			else if (gamepad.getAxis(1) == 1) player2.x += 150 * delta;
 
 			if (player2.x < 0) player2.x = 0;
 			else if (player2.x > 768) player2.x = 768;
@@ -158,7 +156,7 @@ public class VersusGameScreen implements Screen {
 	private void tickMissiles(float delta) {
 		for (Iterator<Rectangle> iter = p1Missiles.iterator(); iter.hasNext(); ) {
 			Rectangle missile = iter.next();
-			missile.x += 350 * delta;
+			missile.x += 500 * delta;
 			if (missile.x > 800) iter.remove();
 			if (missile.overlaps(player2)) {
 				p2Health -= 5;
@@ -168,7 +166,7 @@ public class VersusGameScreen implements Screen {
 
 		for (Iterator<Rectangle> iter = p2Missiles.iterator(); iter.hasNext(); ) {
 			Rectangle missile = iter.next();
-			missile.x -= 350 * delta;
+			missile.x -= 500 * delta;
 			if (missile.x < -16) iter.remove();
 
 			if (missile.overlaps(player1)) {
@@ -179,12 +177,12 @@ public class VersusGameScreen implements Screen {
 
 		for (Iterator<Rectangle> iter = p1Seekers.iterator(); iter.hasNext(); ) {
 			Rectangle seeker = iter.next();
-			seeker.x += 300 * delta;
+			seeker.x += 400 * delta;
 			if (seeker.x > 800) iter.remove();
 
-			if (Math.abs(seeker.y - (player2.y + 15)) < 75 * delta) seeker.x += 100 * delta;
-			else if(seeker.y < (player2.y + 15)) seeker.y += 75 * delta;
-			else seeker.y -= 75 * delta;
+			if (Math.abs(seeker.y - (player2.y + 15)) < 120 * delta) seeker.x += 100 * delta;
+			else if(seeker.y < (player2.y + 15)) seeker.y += 120 * delta;
+			else seeker.y -= 120 * delta;
 
 			if (seeker.overlaps(player2)) {
 				p2Health -= 20;
@@ -194,12 +192,12 @@ public class VersusGameScreen implements Screen {
 
 		for (Iterator<Rectangle> iter = p2Seekers.iterator(); iter.hasNext(); ) {
 			Rectangle seeker = iter.next();
-			seeker.x -= 300 * delta;
+			seeker.x -= 400 * delta;
 			if (seeker.x < -16) iter.remove();
 
-			if (Math.abs(seeker.y - (player1.y + 15)) < 75 * delta) seeker.x -= 100 * delta;
-			else if(seeker.y < (player1.y + 15)) seeker.y += 75 * delta;
-			else seeker.y -= 75 * delta;
+			if (Math.abs(seeker.y - (player1.y + 15)) < 120 * delta) seeker.x -= 100 * delta;
+			else if(seeker.y < (player1.y + 15)) seeker.y += 120 * delta;
+			else seeker.y -= 120 * delta;
 
 			if (seeker.overlaps(player1)) {
 				p1Health -= 20;

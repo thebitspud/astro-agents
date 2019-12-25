@@ -15,7 +15,7 @@ public class VersusOverScreen implements Screen {
 		this.game = game;
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 600);
+		camera.setToOrtho(false, AstroAgents.SCREEN_WIDTH, AstroAgents.SCREEN_HEIGHT);
 	}
 
 	@Override
@@ -34,13 +34,12 @@ public class VersusOverScreen implements Screen {
 		game.batch.begin();
 
 		game.font.setColor(Color.WHITE);
-		game.font.draw(game.batch, "Game Over", 400, 350, 0, 1, false);
-		game.font.draw(game.batch, gameOverText, 400, 300, 0, 1, false);
-		game.font.draw(game.batch, "Both players: Hold start to play again",
-				400, 250,0, 1, false);
 
-		if (game.gamepads.get(0).getButton(9)
-				&& game.gamepads.get(1).getButton(9)) {
+		game.drawCenteredText("Game Over", 0, -50);
+		game.drawCenteredText(gameOverText, 0, -100);
+		game.drawCenteredText("Both players: Hold start to play again", 0, -150);
+
+		if (game.gamepads.get(0).getButton(9) && game.gamepads.get(1).getButton(9)) {
 			game.setScreen(game.vsGameScreen);
 			dispose();
 		}
