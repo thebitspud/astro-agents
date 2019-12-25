@@ -7,12 +7,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class VersusOverScreen implements Screen {
-	private AstroAgents game;
+	private AstroAgents app;
 	private OrthographicCamera camera;
 	String gameOverText;
 
-	VersusOverScreen(final AstroAgents game) {
-		this.game = game;
+	VersusOverScreen(final AstroAgents app) {
+		this.app = app;
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, AstroAgents.SCREEN_WIDTH, AstroAgents.SCREEN_HEIGHT);
@@ -29,22 +29,22 @@ public class VersusOverScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		camera.update();
-		game.batch.setProjectionMatrix(camera.combined);
+		app.batch.setProjectionMatrix(camera.combined);
 
-		game.batch.begin();
+		app.batch.begin();
 
-		game.font.setColor(Color.WHITE);
+		app.font.setColor(Color.WHITE);
 
-		game.drawCenteredText("Game Over", 0, -50);
-		game.drawCenteredText(gameOverText, 0, -100);
-		game.drawCenteredText("Both players: Hold start to play again", 0, -150);
+		app.drawCenteredText("Game Over", 0, 50);
+		app.drawCenteredText(gameOverText, 0, 0);
+		app.drawCenteredText("Both players: Hold start to play again", 0, -50);
 
-		if (game.gamepads.get(0).getButton(9) && game.gamepads.get(1).getButton(9)) {
-			game.setScreen(game.vsGameScreen);
+		if (app.gamepads.get(0).getButton(9) && app.gamepads.get(1).getButton(9)) {
+			app.setScreen(app.vsGameScreen);
 			dispose();
 		}
 
-		game.batch.end();
+		app.batch.end();
 	}
 
 	@Override
