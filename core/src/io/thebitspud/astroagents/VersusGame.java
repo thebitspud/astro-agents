@@ -13,12 +13,12 @@ import java.util.Iterator;
 public class VersusGame {
 	private AstroAgents app;
 
-	private Texture ships, missiles;
+	private Texture ships, missiles, smallAsteroid;
 	private TextureRegion ship1, ship2, missile1, missile2, seeker1, seeker2;
 
 	private Rectangle player1, player2;
 
-	private ArrayList<Rectangle> p1Missiles, p2Missiles, p1Seekers, p2Seekers;
+	private ArrayList<Rectangle> p1Missiles, p2Missiles, p1Seekers, p2Seekers, asteroids;
 	private long p1LastShot, p2LastShot, p1LastSeeker, p2LastSeeker;
 	private int p1Health, p2Health;
 
@@ -35,6 +35,8 @@ public class VersusGame {
 		seeker1 = new TextureRegion(missiles, 0, 4, 26, 5);
 		seeker2 = new TextureRegion(missiles, 0, 9, 26, 5);
 
+		smallAsteroid = new Texture("asteroid.png");
+
 		player1 = new Rectangle(20, 284, 31, 31);
 		player2 = new Rectangle(749, 284, 31, 31);
 
@@ -42,6 +44,7 @@ public class VersusGame {
 		p2Missiles = new ArrayList<Rectangle>();
 		p1Seekers = new ArrayList<Rectangle>();
 		p2Seekers = new ArrayList<Rectangle>();
+		asteroids = new ArrayList<Rectangle>();
 	}
 
 	void init() {
@@ -53,6 +56,14 @@ public class VersusGame {
 		p1Seekers.clear();
 		p2Seekers.clear();
 
+		asteroids.clear();
+
+		for(int i = 0; i < 50; i++) {
+			int xPos = (AstroAgents.SCREEN_WIDTH / 2) + (int) (Math.random() * 100) - 38;
+			int yPos = (int) (Math.random() * 575);
+			asteroids.add(new Rectangle(xPos, yPos, 25, 25));
+		}
+
 		p1Health = 100;
 		p2Health = 100;
 	}
@@ -61,6 +72,7 @@ public class VersusGame {
 		getInput(delta);
 		tickMissiles(delta);
 		tickSeekers(delta);
+		tickAsteroids();
 	}
 
 	void render() {
@@ -68,6 +80,7 @@ public class VersusGame {
 		for (Rectangle missile : p2Missiles) app.batch.draw(missile2, missile.x, missile.y);
 		for (Rectangle seeker : p1Seekers) app.batch.draw(seeker1, seeker.x, seeker.y);
 		for (Rectangle seeker : p2Seekers) app.batch.draw(seeker2, seeker.x, seeker.y);
+		for (Rectangle asteroid: asteroids) app.batch.draw(smallAsteroid, asteroid.x, asteroid.y);
 
 		app.font.setColor(Color.WHITE);
 		app.batch.draw(ship1, player1.x, player1.y);
@@ -191,6 +204,44 @@ public class VersusGame {
 				iter.remove();
 			}
 		}
+	}
+
+	// Yes, I'm aware that this code is pure filth
+
+	private void tickAsteroids() {
+		for (Iterator<Rectangle> iter = asteroids.iterator(); iter.hasNext(); ) {
+			Rectangle asteroid = iter.next();
+
+			if (asteroid.overlaps(player1)) {
+				p1Health -= 10;
+				iter.remove();
+				return;
+			}
+
+			if (asteroid.overlaps(player2)) {
+				p2Health -= 10;
+				iter.remove();
+				return;
+			}
+
+			if(iterateCollisions(asteroid, iter, p1Missiles)) return;
+			if(iterateCollisions(asteroid, iter, p2Missiles)) return;
+			if(iterateCollisions(asteroid, iter, p1Seekers)) return;
+			if(iterateCollisions(asteroid, iter, p2Seekers)) return;
+		}
+	}
+
+	private boolean iterateCollisions(Rectangle asteroid, Iterator<Rectangle> iterObj, ArrayList<Rectangle> list) {
+		for (Iterator<Rectangle> iter = list.iterator(); iter.hasNext(); ) {
+			Rectangle listObj = iter.next();
+			if(listObj.overlaps(asteroid)) {
+				iterObj.remove();
+				iter.remove();
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	void dispose() {

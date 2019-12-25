@@ -53,7 +53,7 @@ public class MainMenuScreen implements Screen {
 			if (app.gamepads.get(0).getButton(1))
 				app.drawCenteredText("Player 1: A", -75, -50);
 			if (app.gamepads.get(1).getButton(1))
-				app.drawCenteredText("Player 1: A", 75, -50);
+				app.drawCenteredText("Player 2: A", 75, -50);
 
 			if (app.gamepads.get(0).getButton(8)
 					&& app.gamepads.get(1).getButton(8)
