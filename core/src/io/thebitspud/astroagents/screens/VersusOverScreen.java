@@ -1,4 +1,4 @@
-package io.thebitspud.astroagents;
+package io.thebitspud.astroagents.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,13 +6,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import io.thebitspud.astroagents.AstroAgents;
 
 public class VersusOverScreen implements Screen {
 	private AstroAgents app;
 	private OrthographicCamera camera;
-	String gameOverText;
+	public String gameOverText;
 
-	VersusOverScreen(final AstroAgents app) {
+	public VersusOverScreen(final AstroAgents app) {
 		this.app = app;
 
 		camera = new OrthographicCamera();

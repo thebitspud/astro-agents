@@ -1,4 +1,4 @@
-package io.thebitspud.astroagents;
+package io.thebitspud.astroagents.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -8,13 +8,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.TimeUtils;
+import io.thebitspud.astroagents.AstroAgents;
 
 public class MainMenuScreen implements Screen {
 	private AstroAgents app;
 	private OrthographicCamera camera;
 	private long lastControllerSwitch, lastGamepadCheck;
 
-	MainMenuScreen(final AstroAgents app) {
+	public MainMenuScreen(final AstroAgents app) {
 		this.app = app;
 
 		camera = new OrthographicCamera();

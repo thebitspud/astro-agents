@@ -1,4 +1,4 @@
-package io.thebitspud.astroagents;
+package io.thebitspud.astroagents.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -6,18 +6,20 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import io.thebitspud.astroagents.AstroAgents;
+import io.thebitspud.astroagents.VersusGame;
 
 public class VersusGameScreen implements Screen {
 	private AstroAgents app;
 	private OrthographicCamera camera;
 
-	private VersusGame game;
+	public VersusGame game;
 	private TextureRegion grayBox;
-	final int hudHeight = 50,
+	public final int hudHeight = 50,
 			textXOffset = AstroAgents.SCREEN_WIDTH / 2 - 100,
 			textYOffset = AstroAgents.SCREEN_HEIGHT / 2 - 20;
 
-	VersusGameScreen(final AstroAgents app) {
+	public VersusGameScreen(final AstroAgents app) {
 		this.app = app;
 
 		game = new VersusGame(app);

@@ -14,7 +14,7 @@ public class DesktopLauncher {
 		config.fullscreen = true;
 		config.width = AstroAgents.SCREEN_WIDTH;
 		config.height = AstroAgents.SCREEN_HEIGHT;
-		config.title = "Astro Agents v0.5";
+		config.title = "Astro Agents v0.6";
 
 		new LwjglApplication(new AstroAgents(), config);
 	}

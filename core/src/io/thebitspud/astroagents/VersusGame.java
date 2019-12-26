@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.TimeUtils;
+import io.thebitspud.astroagents.entities.Asteroid;
+import io.thebitspud.astroagents.entities.Projectile;
+import io.thebitspud.astroagents.entities.Rocket;
+import io.thebitspud.astroagents.entities.Seeker;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,81 +17,60 @@ import java.util.Iterator;
 public class VersusGame {
 	private AstroAgents app;
 
-	private Texture ships, missiles, smallAsteroid;
-	private TextureRegion ship1, ship2, missile1, missile2, seeker1, seeker2;
+	public Rectangle player1, player2;
 
-	private Rectangle player1, player2;
-
-	private ArrayList<Rectangle> p1Missiles, p2Missiles, p1Seekers, p2Seekers, asteroids;
+	private ArrayList<Projectile> p1Missiles, p2Missiles;
+	private ArrayList<Asteroid> asteroids;
 	private long p1LastShot, p2LastShot, p1LastSeeker, p2LastSeeker;
-	int p1Health, p2Health;
+	public int p1Health, p2Health;
 
-	VersusGame(final AstroAgents app) {
+	public VersusGame(final AstroAgents app) {
 		this.app = app;
-
-		ships = new Texture("player.png");
-		ship1 = new TextureRegion(ships, 0, 0, 31, 31);
-		ship2 = new TextureRegion(ships, 31, 0, 31, 31);
-
-		missiles = new Texture("missile.png");
-		missile1 = new TextureRegion(missiles, 0, 0, 13, 4);
-		missile2 = new TextureRegion(missiles, 13, 0, 13, 4);
-		seeker1 = new TextureRegion(missiles, 0, 4, 26, 5);
-		seeker2 = new TextureRegion(missiles, 0, 9, 26, 5);
-
-		smallAsteroid = new Texture("asteroid.png");
 
 		final int yPos = (AstroAgents.SCREEN_HEIGHT / 2) - 16;
 		player1 = new Rectangle(20, yPos, 31, 31);
 		player2 = new Rectangle(AstroAgents.SCREEN_WIDTH - 51, yPos, 31, 31);
 
-		p1Missiles = new ArrayList<Rectangle>();
-		p2Missiles = new ArrayList<Rectangle>();
-		p1Seekers = new ArrayList<Rectangle>();
-		p2Seekers = new ArrayList<Rectangle>();
-		asteroids = new ArrayList<Rectangle>();
+		p1Missiles = new ArrayList<Projectile>();
+		p2Missiles = new ArrayList<Projectile>();
+		asteroids = new ArrayList<Asteroid>();
 	}
 
-	void init() {
-		final int yPos = (AstroAgents.SCREEN_HEIGHT / 2) - 16;
-		player1.setPosition(20, yPos);
-		player2.setPosition(AstroAgents.SCREEN_WIDTH - 51, yPos);
+	public void init() {
+		final int playerYPos = (AstroAgents.SCREEN_HEIGHT / 2) - 16;
+		player1.setPosition(20, playerYPos);
+		player2.setPosition(AstroAgents.SCREEN_WIDTH - 51, playerYPos);
 
 		p1Missiles.clear();
 		p2Missiles.clear();
-		p1Seekers.clear();
-		p2Seekers.clear();
 
 		asteroids.clear();
 
-		for(int i = 0; i < 50; i++) {
+		for(int i = 0; i < 30; i++) {
 			final int xPos = (AstroAgents.SCREEN_WIDTH / 2) + (int) (Math.random() * 100) - 62;
-			final int yRange = AstroAgents.SCREEN_HEIGHT - 25 - app.vsGameScreen.hudHeight;
-			asteroids.add(new Rectangle(xPos, (int) (Math.random() * yRange), 25, 25));
+			final int yPos = (int) ((AstroAgents.SCREEN_HEIGHT - 25 - app.vsGameScreen.hudHeight) * Math.random());
+			asteroids.add(new Asteroid(xPos, yPos, 0, 0, app));
 		}
 
 		p1Health = 100;
 		p2Health = 100;
 	}
 
-	void tick(float delta) {
+	public void tick(float delta) {
 		checkIfDead();
 		getInput(delta);
 		tickMissiles(delta);
-		tickSeekers(delta);
-		tickAsteroids();
+		tickAsteroids(delta);
 	}
 
-	void render() {
-		for (Rectangle missile : p1Missiles) app.batch.draw(missile1, missile.x, missile.y);
-		for (Rectangle missile : p2Missiles) app.batch.draw(missile2, missile.x, missile.y);
-		for (Rectangle seeker : p1Seekers) app.batch.draw(seeker1, seeker.x, seeker.y);
-		for (Rectangle seeker : p2Seekers) app.batch.draw(seeker2, seeker.x, seeker.y);
-		for (Rectangle asteroid: asteroids) app.batch.draw(smallAsteroid, asteroid.x, asteroid.y);
+	public void render() {
+		for (Projectile missile : p1Missiles) missile.render();
+		for (Projectile missile : p2Missiles) missile.render();
+		for (Asteroid asteroid: asteroids) asteroid.render();
 
 		app.font.setColor(Color.WHITE);
-		app.batch.draw(ship1, player1.x, player1.y);
-		app.batch.draw(ship2, player2.x, player2.y);
+		app.batch.draw(app.assets.ship1, player1.x, player1.y);
+		app.batch.draw(app.assets.ship2, player2.x, player2.y);
 	}
 
 	private void checkIfDead() {
@@ -108,13 +89,13 @@ public class VersusGame {
 			Controller gamepad = app.gamepads.get(0);
 
 			if (gamepad.getButton(1) && (TimeUtils.nanoTime() - p1LastShot) / 100000000 > 4) {
-				p1Missiles.add(new Rectangle(player1.x + 9, player1.y  + 4, 13, 4));
-				p1Missiles.add(new Rectangle(player1.x + 9, player1.y  + 23, 13, 4));
+				p1Missiles.add(new Rocket((int) player1.x + 9, (int) player1.y  + 4, 500, 0, app));
+				p1Missiles.add(new Rocket((int) player1.x + 9, (int) player1.y  + 23, 500, 0, app));
 				p1LastShot = TimeUtils.nanoTime();
 			}
 
 			if (gamepad.getButton(0) && (TimeUtils.nanoTime() - p1LastSeeker) / 100000000 > 20) {
-				p1Seekers.add(new Rectangle(player1.x + 4, player1.y  + 13, 26, 5));
+				p1Missiles.add(new Seeker((int) player1.x + 4, (int) player1.y  + 13, 1, 0, app));
 				p1LastSeeker = TimeUtils.nanoTime();
 			}
 
@@ -134,13 +115,13 @@ public class VersusGame {
 			Controller gamepad = app.gamepads.get(1);
 
 			if (gamepad.getButton(1) && (TimeUtils.nanoTime() - p2LastShot) / 100000000 > 4) {
-				p2Missiles.add(new Rectangle(player2.x + 9, player2.y + 4, 13, 4));
-				p2Missiles.add(new Rectangle(player2.x + 9, player2.y + 23, 13, 4));
+				p2Missiles.add(new Rocket((int) player2.x + 9, (int) player2.y + 4, -500, 0, app));
+				p2Missiles.add(new Rocket((int) player2.x + 9, (int) player2.y + 23, -500, 0, app));
 				p2LastShot = TimeUtils.nanoTime();
 			}
 
 			if (gamepad.getButton(0) && (TimeUtils.nanoTime() - p2LastSeeker) / 100000000 > 20) {
-				p2Seekers.add(new Rectangle(player2.x + 4, player2.y  + 13, 26, 5));
+				p2Missiles.add(new Seeker((int) player2.x + 4, (int) player2.y  + 13, -1, 0, app));
 				p2LastSeeker = TimeUtils.nanoTime();
 			}
 
@@ -158,90 +139,58 @@ public class VersusGame {
 	}
 
 	private void tickMissiles(float delta) {
-		for (Iterator<Rectangle> iter = p1Missiles.iterator(); iter.hasNext(); ) {
-			Rectangle missile = iter.next();
-			missile.x += 500 * delta;
+		for (Iterator<Projectile> iter = p1Missiles.iterator(); iter.hasNext(); ) {
+			Projectile missile = iter.next();
+			missile.tick(delta);
+
 			if (missile.x > AstroAgents.SCREEN_WIDTH) iter.remove();
 			if (missile.overlaps(player2)) {
-				p2Health -= 5;
+				p2Health -= missile.getDamage();
 				iter.remove();
 			}
 		}
 
-		for (Iterator<Rectangle> iter = p2Missiles.iterator(); iter.hasNext(); ) {
-			Rectangle missile = iter.next();
-			missile.x -= 500 * delta;
+		for (Iterator<Projectile> iter = p2Missiles.iterator(); iter.hasNext(); ) {
+			Projectile missile = iter.next();
+			missile.tick(delta);
+
 			if (missile.x < -16) iter.remove();
-
 			if (missile.overlaps(player1)) {
-				p1Health -= 5;
+				p1Health -= missile.getDamage();
 				iter.remove();
 			}
 		}
 	}
 
-	private void tickSeekers(float delta) {
-		float seekerBonus = 110 * delta;
-
-		for (Iterator<Rectangle> iter = p1Seekers.iterator(); iter.hasNext(); ) {
-			Rectangle seeker = iter.next();
-			seeker.x += 400 * delta;
-			if (seeker.x > AstroAgents.SCREEN_WIDTH) iter.remove();
-
-			if (Math.abs(seeker.y - (player2.y + 15)) < seekerBonus) seeker.x += seekerBonus;
-			else if(seeker.y < (player2.y + 15)) seeker.y += seekerBonus;
-			else seeker.y -= seekerBonus;
-
-			if (seeker.overlaps(player2)) {
-				p2Health -= 20;
-				iter.remove();
-			}
-		}
-
-		for (Iterator<Rectangle> iter = p2Seekers.iterator(); iter.hasNext(); ) {
-			Rectangle seeker = iter.next();
-			seeker.x -= 400 * delta;
-			if (seeker.x < -16) iter.remove();
-
-			if (Math.abs(seeker.y - (player1.y + 15)) < seekerBonus) seeker.x -= seekerBonus;
-			else if(seeker.y < (player1.y + 15)) seeker.y += seekerBonus;
-			else seeker.y -= seekerBonus;
-
-			if (seeker.overlaps(player1)) {
-				p1Health -= 20;
-				iter.remove();
-			}
-		}
-	}
-
-	private void tickAsteroids() {
-		for (Iterator<Rectangle> iter = asteroids.iterator(); iter.hasNext(); ) {
-			Rectangle asteroid = iter.next();
+	private void tickAsteroids(float delta) {
+		for (Iterator<Asteroid> iter = asteroids.iterator(); iter.hasNext(); ) {
+			Asteroid asteroid = iter.next();
+			asteroid.tick(delta);
 
 			if (asteroid.overlaps(player1)) {
-				p1Health -= 10;
+				p1Health -= asteroid.getDamage();
 				iter.remove();
 				return;
 			}
 
 			if (asteroid.overlaps(player2)) {
-				p2Health -= 10;
+				p2Health -= asteroid.getDamage();
 				iter.remove();
 				return;
 			}
 
 			if(iterateCollisions(asteroid, iter, p1Missiles)) return;
 			if(iterateCollisions(asteroid, iter, p2Missiles)) return;
-			if(iterateCollisions(asteroid, iter, p1Seekers)) return;
-			if(iterateCollisions(asteroid, iter, p2Seekers)) return;
 		}
 	}
 
-	private boolean iterateCollisions(Rectangle asteroid, Iterator<Rectangle> iterObj, ArrayList<Rectangle> list) {
-		for (Iterator<Rectangle> iter = list.iterator(); iter.hasNext(); ) {
-			Rectangle listObj = iter.next();
+	private boolean iterateCollisions(Asteroid asteroid, Iterator<Asteroid> iterObj, ArrayList<Projectile> list) {
+		for (Iterator<Projectile> iter = list.iterator(); iter.hasNext(); ) {
+			Projectile listObj = iter.next();
 			if(listObj.overlaps(asteroid)) {
-				iterObj.remove();
+				asteroid.adjustHealth(-listObj.getDamage());
+				if(asteroid.getHealth() <= 0) iterObj.remove();
+
 				iter.remove();
 				return true;
 			}
@@ -250,8 +199,7 @@ public class VersusGame {
 		return false;
 	}
 
-	void dispose() {
-		ships.dispose();
-		missiles.dispose();
+	public void dispose() {
+		app.assets.dispose();
 	}
 }
