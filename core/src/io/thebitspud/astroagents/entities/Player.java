@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Player extends Entity {
-	private int id, dir;
+	private int id, dir, speed, reloadSpeed, missileVelocity;
 	private Player target;
 	public ArrayList<Projectile> missiles;
 	private Controller gamepad;
@@ -41,6 +41,10 @@ public class Player extends Entity {
 			target = app.vsGameScreen.game.player1;
 		}
 
+		speed = 150;
+		reloadSpeed = 500;
+		missileVelocity = 500;
+
 		missiles.clear();
 		health = 100;
 	}
@@ -62,21 +66,21 @@ public class Player extends Entity {
 	private void getInput(float delta) {
 		if(gamepad == null) return;
 
-		if (gamepad.getButton(1) && (TimeUtils.nanoTime() - lastShot) / 100000000 > 4) {
-			missiles.add(new Rocket((int) x + 9, (int) y  + 4, 500 * dir, 0, app));
-			missiles.add(new Rocket((int) x + 9, (int) y  + 23, 500 * dir, 0, app));
+		if (gamepad.getButton(1) && (TimeUtils.nanoTime() - lastShot) / 1000000 > reloadSpeed) {
+			missiles.add(new Rocket((int) x + 9, (int) y  + 4, missileVelocity * dir, 0, app));
+			missiles.add(new Rocket((int) x + 9, (int) y  + 23, missileVelocity * dir, 0, app));
 			lastShot = TimeUtils.nanoTime();
 		}
 
-		if (gamepad.getButton(0) && (TimeUtils.nanoTime() - lastSeeker) / 100000000 > 20) {
-			missiles.add(new Seeker((int) x + 4, (int) y  + 13, 1 * dir, 0, app));
+		if (gamepad.getButton(0) && (TimeUtils.nanoTime() - lastSeeker) / 1000000 > reloadSpeed * 4) {
+			missiles.add(new Seeker((int) x + 4, (int) y  + 13, dir, 0, missileVelocity / 500, app));
 			lastSeeker = TimeUtils.nanoTime();
 		}
 
-		if (gamepad.getAxis(0) == -1) y += 150 * delta;
-		else if (gamepad.getAxis(0) == 1) y -= 150 * delta;
-		if (gamepad.getAxis(1) == -1) x -= 150 * delta;
-		else if (gamepad.getAxis(1) == 1) x += 150 * delta;
+		if (gamepad.getAxis(0) == -1) y += speed * delta;
+		else if (gamepad.getAxis(0) == 1) y -= speed * delta;
+		if (gamepad.getAxis(1) == -1) x -= speed * delta;
+		else if (gamepad.getAxis(1) == 1) x += speed * delta;
 
 		if (x < 0)x = 0;
 		else if (x > AstroAgents.SCREEN_WIDTH) x = AstroAgents.SCREEN_WIDTH;
@@ -103,5 +107,17 @@ public class Player extends Entity {
 		app.batch.draw(texture, x, y, width, height);
 
 		for(Projectile missile: missiles) missile.render();
+	}
+
+	public void adjustSpeed(int value) {
+		speed += value;
+	}
+
+	public void adjustReloadSpeed(double value) {
+		reloadSpeed *= value;
+	}
+
+	public void adjustMissileVelocity(int value) {
+		missileVelocity += value;
 	}
 }

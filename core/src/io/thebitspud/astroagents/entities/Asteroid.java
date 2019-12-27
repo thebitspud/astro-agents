@@ -10,4 +10,13 @@ public class Asteroid extends Projectile {
 		damage = 10;
 		health = 20;
 	}
+
+	@Override
+	public void tick(float delta) {
+		x += xVelocity * delta;
+		y += yVelocity * delta;
+
+		if(x <= 0 || x >= AstroAgents.SCREEN_WIDTH - width) xVelocity *= -1;
+		if(y <= 0 || y >= AstroAgents.SCREEN_HEIGHT - app.vsGameScreen.hudHeight - height) yVelocity *= -1;
+	}
 }

@@ -37,8 +37,6 @@ public class VersusGameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		game.tick(delta);
-
 		if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -52,10 +50,12 @@ public class VersusGameScreen implements Screen {
 		game.render();
 
 		app.batch.draw(grayBox, 0, AstroAgents.SCREEN_HEIGHT - 50, AstroAgents.SCREEN_WIDTH, hudHeight);
-		app.drawCenteredText("Player 1 Health: " + game.player1.getHealth() + "%", -textXOffset, textYOffset);
-		app.drawCenteredText("Player 2 Health: " + game.player2.getHealth() + "%", textXOffset, textYOffset);
+		app.drawCenteredText("Player 1 Health: " + game.player1.getHealth(), -textXOffset, textYOffset);
+		app.drawCenteredText("Player 2 Health: " + game.player2.getHealth(), textXOffset, textYOffset);
 
 		app.batch.end();
+
+		game.tick(delta);
 	}
 
 	@Override

@@ -5,13 +5,17 @@ import io.thebitspud.astroagents.AstroAgents;
 import io.thebitspud.astroagents.VersusGame;
 
 public class Seeker extends Projectile {
-	private final int maxYVelocity = 200, xAcceleration = 10, yAcceleration = 15;
+	private int maxYVelocity, xAcceleration, yAcceleration;
 	private Rectangle target;
 
-	public Seeker(int x, int y, int xVelocity, int yVelocity, AstroAgents app) {
+	public Seeker(int x, int y, int xVelocity, int yVelocity, float accelConst, AstroAgents app) {
 		super(x, y, 26, 5, xVelocity, yVelocity, app);
 
 		VersusGame game = app.vsGameScreen.game;
+
+		maxYVelocity = 200;
+		xAcceleration = (int) (10 * accelConst);
+		yAcceleration = (int) (15 * accelConst);
 
 		if(xVelocity > 0) {
 			texture = app.assets.seeker1;

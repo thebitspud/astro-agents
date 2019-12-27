@@ -32,4 +32,8 @@ public abstract class Entity extends Rectangle {
 	public void adjustHealth(int value) {
 		health += value;
 	}
+
+	public boolean getActive() {
+		return active;
+	}
 }
