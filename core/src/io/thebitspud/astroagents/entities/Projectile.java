@@ -10,6 +10,8 @@ public abstract class Projectile extends Entity {
 
 		this.xVelocity = xVelocity;
 		this.yVelocity = yVelocity;
+
+		damage = 0;
 	}
 
 	@Override

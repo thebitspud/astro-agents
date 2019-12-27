@@ -24,7 +24,7 @@ public class VersusGameScreen implements Screen {
 		this.app = app;
 
 		game = new VersusGame(app);
-		grayBox = new TextureRegion(new Texture("asteroid.png"), 10, 10, 1, 1);
+		grayBox = new TextureRegion(new Texture("asteroids.png"), 10, 10, 1, 1);
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, AstroAgents.SCREEN_WIDTH, AstroAgents.SCREEN_HEIGHT);

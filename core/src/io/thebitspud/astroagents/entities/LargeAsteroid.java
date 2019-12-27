@@ -8,8 +8,8 @@ public class LargeAsteroid extends Projectile {
 		super(x, y, 50, 50, xVelocity, yVelocity, app);
 
 		texture = app.assets.largeAsteroid;
-		damage = 25;
-		health = 60;
+		damage = 100;
+		health = 75;
 	}
 
 	@Override

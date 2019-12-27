@@ -21,8 +21,6 @@ public class Player extends Entity {
 		missiles = new ArrayList<Projectile>();
 		this.id = id;
 
-		if(app.gamepads.size() > id - 1) gamepad = app.gamepads.get(id - 1);
-
 		if(id == 1) {
 			texture = app.assets.ship1;
 			dir = 1;
@@ -33,6 +31,8 @@ public class Player extends Entity {
 	}
 
 	public void init() {
+		if(app.gamepads.size() > id - 1) gamepad = app.gamepads.get(id - 1);
+
 		if(id == 1) {
 			setPosition(20, playerYPos);
 			target = app.vsGameScreen.game.player2;
@@ -46,7 +46,7 @@ public class Player extends Entity {
 		missileVelocity = 500;
 
 		missiles.clear();
-		health = 100;
+		health = 250;
 	}
 
 	@Override
@@ -98,6 +98,11 @@ public class Player extends Entity {
 			if (missile.overlaps(target)) {
 				target.adjustHealth(-missile.getDamage());
 				iter.remove();
+
+				boolean isSeeker = (missile.getClass() == Seeker.class);
+
+				app.vsGameScreen.game.initExplosion((int) (missile.x + missile.width / 2),
+						(int) (missile.y + missile.height / 2), isSeeker);
 			}
 		}
 	}

@@ -8,6 +8,7 @@ public class Rocket extends Projectile {
 
 		if(xVelocity > 0) texture = app.assets.rocket1;
 		else texture = app.assets.rocket2;
+
 		damage = 5;
 	}
 }

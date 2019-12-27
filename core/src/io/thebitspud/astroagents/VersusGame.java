@@ -11,6 +11,7 @@ public class VersusGame {
 	public Player player1, player2;
 
 	private ArrayList<Projectile> asteroids;
+	private ArrayList<Explosion> explosions;
 	private ArrayList<Powerup> powerups;
 
 	public VersusGame(final AstroAgents app) {
@@ -21,6 +22,7 @@ public class VersusGame {
 		player2 = new Player(AstroAgents.SCREEN_WIDTH - 51, yPos, 2, app);
 
 		asteroids = new ArrayList<Projectile>();
+		explosions = new ArrayList<Explosion>();
 		powerups = new ArrayList<Powerup>();
 	}
 
@@ -30,6 +32,7 @@ public class VersusGame {
 
 		asteroids.clear();
 		powerups.clear();
+		explosions.clear();
 
 		for(int i = 0; i < 60; i++) {
 			int xPos;
@@ -44,7 +47,7 @@ public class VersusGame {
 
 		for(int i = 0; i < 5; i++) {
 			final int xPos = (AstroAgents.SCREEN_WIDTH / 2) + (int) (Math.random() * 500) - 275;
-			final int yPos = (int) ((AstroAgents.SCREEN_HEIGHT - 50 - app.vsGameScreen.hudHeight) * Math.random());
+			final int yPos = (AstroAgents.SCREEN_HEIGHT - 50 - app.vsGameScreen.hudHeight) / 10 * (2 * i + 1);
 			asteroids.add(new LargeAsteroid(xPos, yPos, 0, 0, app));
 		}
 	}
@@ -53,6 +56,7 @@ public class VersusGame {
 		player1.tick(delta);
 		player2.tick(delta);
 		tickAsteroids(delta);
+		tickExplosions(delta);
 		tickPowerups(delta);
 	}
 
@@ -60,6 +64,7 @@ public class VersusGame {
 		player1.render();
 		player2.render();
 		for (Projectile asteroid: asteroids) asteroid.render();
+		for (Explosion explosion: explosions) explosion.render();
 		for (Powerup powerup: powerups) powerup.render();
 	}
 
@@ -97,6 +102,45 @@ public class VersusGame {
 
 	private void spawnPowerUp(int x, int y) {
 		powerups.add(new Powerup(x, y, (int) (Math.random() * 4), app));
+	}
+
+	public void initExplosion(int x, int y, boolean large) {
+		Explosion explosion;
+
+		if(large) explosion = new Explosion(x - 16, y - 16, true, app);
+		else explosion = new Explosion(x - 8, y - 8, false, app);
+
+		explosions.add(explosion);
+
+		if (explosion.overlaps(player1)) player1.adjustHealth(-explosion.getDamage());
+		if (explosion.overlaps(player2)) player2.adjustHealth(-explosion.getDamage());
+
+		for (Iterator<Projectile> iter = asteroids.iterator(); iter.hasNext(); ) {
+			Projectile asteroid = iter.next();
+
+			if (asteroid.overlaps(explosion)) {
+				asteroid.adjustHealth(-explosion.getDamage());
+
+				if (asteroid.getClass() == LargeAsteroid.class) {
+					if (asteroid.getHealth() <= 0) {
+						iter.remove();
+						largeAsteroidKill((LargeAsteroid) asteroid);
+						return;
+					}
+				} else if (asteroid.getHealth() <= 0) iter.remove();
+			}
+		}
+	}
+
+	private void tickExplosions(float delta) {
+		for (Explosion explosion : explosions) {
+			explosion.tick(delta);
+
+			if (!explosion.getActive()) {
+				explosions.remove(explosion);
+				return;
+			}
+		}
 	}
 
 	private void tickPowerups(float delta) {
@@ -139,7 +183,11 @@ public class VersusGame {
 						largeAsteroidKill((LargeAsteroid) asteroid);
 					}
 
+					boolean isSeeker = false;
+					if(listObj.getClass() == Seeker.class) isSeeker = true;
+
 					iter.remove();
+					initExplosion((int) (listObj.x + listObj.width / 2), (int) (listObj.y + listObj.height / 2), isSeeker);
 					return true;
 				}
 			} else if(listObj.overlaps(asteroid)) {
@@ -151,7 +199,12 @@ public class VersusGame {
 					if(Math.random() > 0.67) spawnPowerUp((int) asteroid.x, (int) asteroid.y);
 				}
 
+				boolean isSeeker = false;
+				if(listObj.getClass() == Seeker.class) isSeeker = true;
+
 				iter.remove();
+
+				initExplosion((int) (listObj.x + listObj.width / 2), (int) (listObj.y + listObj.height / 2), isSeeker);
 				return true;
 			}
 		}

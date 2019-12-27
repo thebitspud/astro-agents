@@ -42,7 +42,7 @@ public class Powerup extends Entity {
 	public void applyEffects(Player target) {
 		switch (id) {
 			case 0:
-				target.adjustHealth(25);
+				target.adjustHealth(50);
 				break;
 			case 1:
 				target.adjustSpeed(15);

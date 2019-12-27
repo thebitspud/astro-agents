@@ -37,7 +37,7 @@ public class AstroAgents extends Game {
 		vsGameScreen = new VersusGameScreen(this);
 		vsOverScreen = new VersusOverScreen(this);
 
-		this.setScreen(menuScreen);
+		this.setScreen(vsGameScreen);
 	}
 
 	public void checkForGamepads() {

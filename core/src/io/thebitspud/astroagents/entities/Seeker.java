@@ -25,7 +25,7 @@ public class Seeker extends Projectile {
 			target = game.player1;
 		}
 
-		damage = 20;
+		damage = 15;
 	}
 
 	@Override
