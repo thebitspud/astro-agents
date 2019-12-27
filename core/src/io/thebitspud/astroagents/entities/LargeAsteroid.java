@@ -27,16 +27,13 @@ public class LargeAsteroid extends Projectile {
 		int squaredDistance = (int) (Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 		int rSquared = (int) Math.pow(width / 2, 2);
 
-		if(Math.abs(squaredDistance) < rSquared) return true;
-		else return false;
+		return Math.abs(squaredDistance) < rSquared;
 	}
 
 	public boolean overlaps(Rectangle r) {
 		if(circleContains((int) r.x, (int) r.y)) return true;
 		if(circleContains((int) (r.x + r.width), (int) r.y)) return true;
 		if(circleContains((int) r.x, (int) (r.y + r.height))) return true;
-		if(circleContains((int) (r.x + r.width), (int) (r.y + r.height))) return true;
-
-		return false;
+		return circleContains((int) (r.x + r.width), (int) (r.y + r.height));
 	}
 }

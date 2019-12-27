@@ -5,7 +5,7 @@ import io.thebitspud.astroagents.AstroAgents;
 public class Powerup extends Entity {
 	private long timeCreated;
 	private int despawnTime, id;
-	public static final int DEFAULT_DESPAWN_TIME = 30;
+	private static final int DEFAULT_DESPAWN_TIME = 30;
 
 	public Powerup(int x, int y, int id, AstroAgents app) {
 		super(x, y, 25, 25, app);
