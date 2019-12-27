@@ -1,14 +1,11 @@
 package io.thebitspud.astroagents;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import io.thebitspud.astroagents.screens.MainMenuScreen;
-import io.thebitspud.astroagents.screens.VersusGameScreen;
-import io.thebitspud.astroagents.screens.VersusOverScreen;
+import io.thebitspud.astroagents.screens.*;
 
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -17,30 +14,30 @@ public class AstroAgents extends Game {
 	public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width,
 			SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
 
-	public VersusGameScreen vsGameScreen;
-	public VersusOverScreen vsOverScreen;
-
 	public SpriteBatch batch;
 	public BitmapFont font;
 	public AssetLibrary assets;
+
+	public MainMenuScreen menuScreen;
+	public VersusGameScreen vsGameScreen;
+	public VersusOverScreen vsOverScreen;
 
 	public ArrayList<Controller> gamepads;
 
 	@Override
 	public void create() {
-		MainMenuScreen menuScreen = new MainMenuScreen(this);
-		vsGameScreen = new VersusGameScreen(this);
-		vsOverScreen = new VersusOverScreen(this);
+		gamepads = new ArrayList<Controller>();
+		checkForGamepads();
 
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 		assets = new AssetLibrary();
 
-		this.setScreen(menuScreen);
+		menuScreen = new MainMenuScreen(this);
+		vsGameScreen = new VersusGameScreen(this);
+		vsOverScreen = new VersusOverScreen(this);
 
-		gamepads = new ArrayList<Controller>();
-
-		checkForGamepads();
+		this.setScreen(vsGameScreen);
 	}
 
 	public void checkForGamepads() {

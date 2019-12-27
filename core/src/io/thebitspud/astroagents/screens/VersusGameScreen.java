@@ -1,6 +1,7 @@
 package io.thebitspud.astroagents.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -38,6 +39,8 @@ public class VersusGameScreen implements Screen {
 	public void render(float delta) {
 		game.tick(delta);
 
+		if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
+
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -50,8 +53,8 @@ public class VersusGameScreen implements Screen {
 
 		game.render();
 
-		app.drawCenteredText("Player 1 Health: " + game.p1Health + "%", -textXOffset, textYOffset);
-		app.drawCenteredText("Player 2 Health: " + game.p2Health + "%", textXOffset, textYOffset);
+		app.drawCenteredText("Player 1 Health: " + game.player1.getHealth() + "%", -textXOffset, textYOffset);
+		app.drawCenteredText("Player 2 Health: " + game.player2.getHealth() + "%", textXOffset, textYOffset);
 
 		app.batch.end();
 	}

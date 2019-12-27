@@ -4,8 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AssetLibrary {
-	public Texture ships, missiles, asteroids;
-	public TextureRegion ship1, ship2, rocket1, rocket2, seeker1, seeker2, smallAsteroid;
+	public Texture ships, missiles, asteroids, powerups;
+	public TextureRegion ship1, ship2, rocket1, rocket2, seeker1, seeker2, smallAsteroid, repair, boost, reload,
+			velocity;
 
 	public AssetLibrary() {
 		ships = new Texture("player.png");
@@ -20,6 +21,12 @@ public class AssetLibrary {
 
 		asteroids = new Texture("asteroid.png");
 		smallAsteroid = new TextureRegion(asteroids, 0, 0, 25, 25);
+
+		powerups = new Texture("powerups.png");
+		repair = new TextureRegion(powerups, 0, 0, 25, 25);
+		boost = new TextureRegion(powerups, 25, 0, 25, 25);
+		reload = new TextureRegion(powerups, 50, 0, 25, 25);
+		velocity = new TextureRegion(powerups, 75, 0, 25, 25);
 	}
 
 	public void dispose() {

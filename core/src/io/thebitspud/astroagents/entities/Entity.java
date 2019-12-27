@@ -9,12 +9,14 @@ public abstract class Entity extends Rectangle {
 	public TextureRegion texture;
 	protected int health;
 	public static final int DEFAULT_HEALTH = 10;
+	public boolean active;
 
 	public Entity(int x, int y, int width, int height, AstroAgents app) {
 		this.set(x, y, width, height);
 
 		this.app = app;
 		health = DEFAULT_HEALTH;
+		active = true;
 	}
 
 	public abstract void tick(float delta);
@@ -25,5 +27,9 @@ public abstract class Entity extends Rectangle {
 
 	public int getHealth() {
 		return health;
+	}
+
+	public void adjustHealth(int value) {
+		health += value;
 	}
 }

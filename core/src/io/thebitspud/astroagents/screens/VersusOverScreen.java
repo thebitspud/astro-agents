@@ -43,7 +43,9 @@ public class VersusOverScreen implements Screen {
 		app.drawCenteredText(gameOverText, 0, 10);
 		app.drawCenteredText("Both players: Hold start to play again", 0, -40);
 
-		if (app.gamepads.get(0).getButton(9) && app.gamepads.get(1).getButton(9)) {
+		if (app.gamepads.size() >= 2
+				&& app.gamepads.get(0).getButton(9)
+				&& app.gamepads.get(1).getButton(9)) {
 			app.setScreen(app.vsGameScreen);
 			dispose();
 		}
