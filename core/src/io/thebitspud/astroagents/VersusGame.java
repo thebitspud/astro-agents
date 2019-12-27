@@ -71,12 +71,22 @@ public class VersusGame {
 			if (asteroid.overlaps(player1)) {
 				player1.adjustHealth(-asteroid.getDamage());
 				iter.remove();
+
+				if(asteroid.getClass() == LargeAsteroid.class) {
+					largeAsteroidKill((LargeAsteroid) asteroid);
+				} else if(Math.random() > 0.67) spawnPowerUp((int) asteroid.x, (int) asteroid.y);
+
 				return;
 			}
 
 			if (asteroid.overlaps(player2)) {
 				player2.adjustHealth(-asteroid.getDamage());
 				iter.remove();
+
+				if(asteroid.getClass() == LargeAsteroid.class) {
+					largeAsteroidKill((LargeAsteroid) asteroid);
+				} else if(Math.random() > 0.67) spawnPowerUp((int) asteroid.x, (int) asteroid.y);
+
 				return;
 			}
 
@@ -126,18 +136,7 @@ public class VersusGame {
 					if(asteroid.getHealth() <= 0) {
 						iterObj.remove();
 
-						spawnPowerUp((int) asteroid.x, (int) asteroid.y);
-
-						asteroids.add(new Asteroid((int) asteroid.x, (int) asteroid.y,
-								(int) (-Math.random() * 50) - 50,(int) (-Math.random() * 50) - 50, app));
-						asteroids.add(new Asteroid((int) asteroid.x, (int) asteroid.y,
-								(int) (Math.random() * 50 + 50), (int) (-Math.random() * 50 - 50), app));
-						asteroids.add(new Asteroid((int) asteroid.x, (int) asteroid.y,
-								(int) (-Math.random() * 50 - 50), (int) (Math.random() * 50 + 50), app));
-						asteroids.add(new Asteroid((int) asteroid.x, (int) asteroid.y,
-								(int) (Math.random() * 50 + 50), (int) (Math.random() * 50 + 50), app));
-						asteroids.add(new Asteroid((int) asteroid.x, (int) asteroid.y,
-								(int) (Math.random() * 200 - 100), (int) (Math.random() * 200 - 100), app));
+						largeAsteroidKill((LargeAsteroid) asteroid);
 					}
 
 					iter.remove();
@@ -158,6 +157,21 @@ public class VersusGame {
 		}
 
 		return false;
+	}
+
+	private void largeAsteroidKill(LargeAsteroid asteroid) {
+		spawnPowerUp((int) asteroid.x + 12, (int) asteroid.y + 12);
+
+		asteroids.add(new Asteroid((int) asteroid.x + 12, (int) asteroid.y + 12,
+				(int) (-Math.random() * 50) - 50,(int) (-Math.random() * 50) - 50, app));
+		asteroids.add(new Asteroid((int) asteroid.x + 12, (int) asteroid.y + 12,
+				(int) (Math.random() * 50 + 50), (int) (-Math.random() * 50 - 50), app));
+		asteroids.add(new Asteroid((int) asteroid.x + 12, (int) asteroid.y + 12,
+				(int) (-Math.random() * 50 - 50), (int) (Math.random() * 50 + 50), app));
+		asteroids.add(new Asteroid((int) asteroid.x + 12, (int) asteroid.y + 12,
+				(int) (Math.random() * 50 + 50), (int) (Math.random() * 50 + 50), app));
+		asteroids.add(new Asteroid((int) asteroid.x + 12, (int) asteroid.y + 12,
+				(int) (Math.random() * 200 - 100), (int) (Math.random() * 200 - 100), app));
 	}
 
 	public void dispose() {

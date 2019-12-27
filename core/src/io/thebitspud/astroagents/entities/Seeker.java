@@ -13,7 +13,7 @@ public class Seeker extends Projectile {
 
 		VersusGame game = app.vsGameScreen.game;
 
-		maxYVelocity = 200;
+		maxYVelocity = (int) (200 * Math.sqrt(accelConst));
 		xAcceleration = (int) (10 * accelConst);
 		yAcceleration = (int) (15 * accelConst);
 

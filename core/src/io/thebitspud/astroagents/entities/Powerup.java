@@ -48,7 +48,7 @@ public class Powerup extends Entity {
 				target.adjustSpeed(15);
 				break;
 			case 2:
-				target.adjustReloadSpeed(0.9);
+				target.adjustReloadSpeed(0.87);
 				break;
 			case 3:
 				target.adjustMissileVelocity(100);
