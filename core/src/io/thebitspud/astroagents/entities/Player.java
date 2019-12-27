@@ -83,10 +83,10 @@ public class Player extends Entity {
 		else if (gamepad.getAxis(1) == 1) x += speed * delta;
 
 		if (x < 0)x = 0;
-		else if (x > AstroAgents.SCREEN_WIDTH) x = AstroAgents.SCREEN_WIDTH;
+		else if (x > AstroAgents.SCREEN_WIDTH - width) x = AstroAgents.SCREEN_WIDTH - width;
 		if (y < 0) y = 0;
-		else if (y > AstroAgents.SCREEN_HEIGHT - 31 - app.vsGameScreen.hudHeight)
-				y = AstroAgents.SCREEN_HEIGHT - 31 - app.vsGameScreen.hudHeight;
+		else if (y > AstroAgents.SCREEN_HEIGHT - height - app.vsGameScreen.hudHeight)
+				y = AstroAgents.SCREEN_HEIGHT - height - app.vsGameScreen.hudHeight;
 	}
 
 	private void tickMissiles(float delta) {

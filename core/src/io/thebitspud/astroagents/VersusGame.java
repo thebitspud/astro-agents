@@ -43,8 +43,8 @@ public class VersusGame {
 		}
 
 		for(int i = 0; i < 5; i++) {
-			final int xPos = (AstroAgents.SCREEN_WIDTH / 2) + (int) (Math.random() * 500) - 262;
-			final int yPos = (int) ((AstroAgents.SCREEN_HEIGHT - 25 - app.vsGameScreen.hudHeight) * Math.random());
+			final int xPos = (AstroAgents.SCREEN_WIDTH / 2) + (int) (Math.random() * 500) - 275;
+			final int yPos = (int) ((AstroAgents.SCREEN_HEIGHT - 50 - app.vsGameScreen.hudHeight) * Math.random());
 			asteroids.add(new LargeAsteroid(xPos, yPos, 0, 0, app));
 		}
 	}
