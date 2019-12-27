@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Player extends Entity {
-	private int id;
+	private int id, dir;
 	private Player target;
 	public ArrayList<Projectile> missiles;
 	private Controller gamepad;
@@ -23,8 +23,13 @@ public class Player extends Entity {
 
 		if(app.gamepads.size() > id - 1) gamepad = app.gamepads.get(id - 1);
 
-		if(id == 1) texture = app.assets.ship1;
-		else if(id == 2) texture = app.assets.ship2;
+		if(id == 1) {
+			texture = app.assets.ship1;
+			dir = 1;
+		} else if(id == 2) {
+			texture = app.assets.ship2;
+			dir = -1;
+		}
 	}
 
 	public void init() {
@@ -58,13 +63,13 @@ public class Player extends Entity {
 		if(gamepad == null) return;
 
 		if (gamepad.getButton(1) && (TimeUtils.nanoTime() - lastShot) / 100000000 > 4) {
-			missiles.add(new Rocket((int) x + 9, (int) y  + 4, 500, 0, app));
-			missiles.add(new Rocket((int) x + 9, (int) y  + 23, 500, 0, app));
+			missiles.add(new Rocket((int) x + 9, (int) y  + 4, 500 * dir, 0, app));
+			missiles.add(new Rocket((int) x + 9, (int) y  + 23, 500 * dir, 0, app));
 			lastShot = TimeUtils.nanoTime();
 		}
 
 		if (gamepad.getButton(0) && (TimeUtils.nanoTime() - lastSeeker) / 100000000 > 20) {
-			missiles.add(new Seeker((int) x + 4, (int) y  + 13, 1, 0, app));
+			missiles.add(new Seeker((int) x + 4, (int) y  + 13, 1 * dir, 0, app));
 			lastSeeker = TimeUtils.nanoTime();
 		}
 

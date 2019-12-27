@@ -49,10 +49,9 @@ public class VersusGameScreen implements Screen {
 
 		app.batch.begin();
 
-		app.batch.draw(grayBox, 0, AstroAgents.SCREEN_HEIGHT - 50, AstroAgents.SCREEN_WIDTH, hudHeight);
-
 		game.render();
 
+		app.batch.draw(grayBox, 0, AstroAgents.SCREEN_HEIGHT - 50, AstroAgents.SCREEN_WIDTH, hudHeight);
 		app.drawCenteredText("Player 1 Health: " + game.player1.getHealth() + "%", -textXOffset, textYOffset);
 		app.drawCenteredText("Player 2 Health: " + game.player2.getHealth() + "%", textXOffset, textYOffset);
 
