@@ -9,7 +9,7 @@ public class LargeAsteroid extends Projectile {
 
 		texture = app.assets.largeAsteroid;
 		damage = 100;
-		health = 75;
+		health = 100;
 	}
 
 	@Override

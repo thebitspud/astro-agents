@@ -69,9 +69,10 @@ public class VersusGame {
 	}
 
 	private void tickAsteroids(float delta) {
+		for(Projectile asteroid: asteroids) asteroid.tick(delta);
+
 		for (Iterator<Projectile> iter = asteroids.iterator(); iter.hasNext(); ) {
 			Projectile asteroid = iter.next();
-			asteroid.tick(delta);
 
 			if (asteroid.overlaps(player1)) {
 				player1.adjustHealth(-asteroid.getDamage());
@@ -79,9 +80,8 @@ public class VersusGame {
 
 				if(asteroid.getClass() == LargeAsteroid.class) {
 					largeAsteroidKill((LargeAsteroid) asteroid);
+					return;
 				} else if(Math.random() > 0.67) spawnPowerUp((int) asteroid.x, (int) asteroid.y);
-
-				return;
 			}
 
 			if (asteroid.overlaps(player2)) {
@@ -90,9 +90,8 @@ public class VersusGame {
 
 				if(asteroid.getClass() == LargeAsteroid.class) {
 					largeAsteroidKill((LargeAsteroid) asteroid);
+					return;
 				} else if(Math.random() > 0.67) spawnPowerUp((int) asteroid.x, (int) asteroid.y);
-
-				return;
 			}
 
 			if(iterateAsteroidCollisions(asteroid, iter, player1.missiles)) return;
@@ -133,13 +132,11 @@ public class VersusGame {
 	}
 
 	private void tickExplosions(float delta) {
-		for (Explosion explosion : explosions) {
+		for (Iterator<Explosion> iter = explosions.iterator(); iter.hasNext(); ) {
+			Explosion explosion = iter.next();
 			explosion.tick(delta);
 
-			if (!explosion.getActive()) {
-				explosions.remove(explosion);
-				return;
-			}
+			if (!explosion.getActive()) iter.remove();
 		}
 	}
 

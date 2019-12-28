@@ -15,7 +15,7 @@ public class Seeker extends Projectile {
 
 		maxYVelocity = (int) (200 * Math.sqrt(accelConst));
 		xAcceleration = (int) (10 * accelConst);
-		yAcceleration = (int) (15 * accelConst);
+		yAcceleration = (int) (25 * accelConst) - 10;
 
 		if(xVelocity > 0) {
 			texture = app.assets.seeker1;
