@@ -10,5 +10,7 @@ Download and run the .jar file
 Note: You will need 2 USB game controllers to play
 
 D-pad: Move
+
 A: Fire rockets
+
 X: Fire seeking missile
